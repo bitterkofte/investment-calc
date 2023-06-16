@@ -1,5 +1,7 @@
 import classes from "./ResultsTable.module.css";
-import { CSVLink } from 'react-csv';
+import { CSVLink } from "react-csv";
+import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -9,16 +11,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const ResultsTable = (props) => {
-  // let outputData = `Year, Total Savings, Interest (Year), Total Interest, Invested Capital
-  // ${props.data.map((yearData) => {
-  //   return (`${yearData.year}, ${formatter.format(yearData.savingsEndOfYear)}, ${formatter.format(yearData.yearlyInterest)}, ${formatter.format(yearData.savingsEndOfYear - props.initialInvestment - yearData.yearlyContribution * yearData.year)}`
-  //   )
-  // })}`
-  // const blob = new Blob([outputData], {type: "octet-stream"})
-  // const href = URL.createObjectURL(blob)
-  // URL.revokeObjectURL(href)
-
-  const outputData = props.data.map((yearData) => {
+  const outputData = props.data?.map((yearData) => {
     return {
       Year: yearData.year,
       "Total Savings": formatter.format(yearData.savingsEndOfYear),
@@ -27,12 +20,12 @@ const ResultsTable = (props) => {
         yearData.savingsEndOfYear -
           props.initialInvestment -
           yearData.yearlyContribution * yearData.year
-      )
+      ),
     };
   });
 
   return (
-    <div className="">
+    <div className={classes["result-container"]}>
       <table className={classes.result}>
         <thead>
           <tr>
@@ -66,9 +59,16 @@ const ResultsTable = (props) => {
           ))}
         </tbody>
       </table>
-      <CSVLink data={outputData} filename={"myInvestment.csv"}>
-        Download
-      </CSVLink>
+
+      <div className={classes["button-container"]}>
+        <CSVLink
+          className={classes.csv}
+          data={outputData}
+          filename={"MyInvestment.csv"}
+        >
+          Download CSV
+        </CSVLink>
+      </div>
     </div>
   );
 };

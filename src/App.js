@@ -27,6 +27,7 @@ function App() {
         savingsEndOfYear: currentSavings,
         yearlyContribution: yearlyContribution,
       });
+      // console.log('A: ',yearlyData)
     }
   }
 
